@@ -10,30 +10,24 @@ import configparser
 
 
 
-comm_name = 'nseg'
-
 def main():
 
-
+    comm_names = ['nseg','glnagano']
 	#開催前のイベントの情報を抜き出す
-	#nsegさん
-	#titles,urls,dates,place = get_event()
-	post_text = get_event()
-
-	#twitter投稿用に編集
-	#post_text = edit_post(titles,urls,dates,place)
-	try:
-		for i in post_text:
-			print(i)
-			post_tweet("自動投稿：" +str(i))
-			time.sleep(120.0)
-	except:
-		print("err!")
+    for comm_name in comm_names:
+        post_text = get_event(comm_name)
+        print (post_text)
+		try:
+			for i in post_text:
+				print(i)
+				post_tweet("【自動投稿】" +str(i))
+				time.sleep(120.0)
+		except:
+			print("err!")
 
 
-def get_event():
-	#glnaganoのイベント情報を取得
-	#今はイベントがないのでnsegさんのものを取得
+def get_event(comm_name):
+	#glnaganoのイベント情報を取得,ついでにnsegさんも
 	url = urllib2.urlopen("https://"+comm_name+".doorkeeper.jp/events/upcoming")
 
 	soup = BeautifulSoup(url)
@@ -41,7 +35,7 @@ def get_event():
 	#タイトルの一覧
 	#all_title = get_title(soup)
 	#urlの一覧
-	all_url = get_url(soup)
+	all_url = get_url(soup,comm_name)
 	#urlの一覧からリンク先のtwitterリンクを読み込んでそれを投稿
 	tweet_shares = get_tweetlink(all_url)
 
@@ -67,7 +61,7 @@ def get_title(soup):
 	return titles
 
 #urlの一覧を取得
-def get_url(soup):
+def get_url(soup,comm_name):
 	all_events = soup.find_all("h3")
 	#正規表現で取得
 	pattern = str("https://"+comm_name+".doorkeeper.jp/events/\d*")
@@ -107,7 +101,7 @@ def edit_post(titles,urls,dates,place):
 	return post_text
 
 def get_tweetlink(all_url):
-
+	#開催前urlの一覧からtwitter投稿用イベントの一覧を取得する
 	tweet_shares = []
 	for eventurl in all_url:
 		url = urllib2.urlopen(eventurl)
