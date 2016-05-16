@@ -74,10 +74,10 @@ def get_tweetlink(all_url):
 	return tweet_shares
 
 def post_tweet(post_text):
-	inifile = configparser.SafeConfigParser()
-	inifile.read("./settings.ini")
+    inifile = configparser.SafeConfigParser()
+    inifile.read("./settings.ini")
 
-	#twitter投稿用アクセスキーとか 
+    #twitter投稿用アクセスキーとか 
     CONSUMER_KEY    = str(inifile.get("twitter","CONSUMER_KEY")).strip()
     CONSUMER_SECRET = str(inifile.get("twitter","CONSUMER_SECRET")).strip()
     ACCESS_KEY      = str(inifile.get("twitter","ACCESS_KEY")).strip()
