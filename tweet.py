@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import sys  
+sys.path.append("site-packages")
  
 import datetime, twython, platform
 import urllib.request as urllib2
@@ -8,22 +10,24 @@ import re
 import time
 import configparser
 
-
-
 def main():
 
     comm_names = ['nseg','glnagano']
-	#開催前のイベントの情報を抜き出す
+    #コミュニティの数でループ
     for comm_name in comm_names:
-        post_text = get_event(comm_name)
-        print (post_text)
-		try:
-			for i in post_text:
-				print(i)
-				post_tweet("【自動投稿】" +str(i))
-				time.sleep(120.0)
-		except:
-			print("err!")
+    	#投稿するテキストを取得する
+        post_texts = get_event(comm_name)
+        try:
+            #イベントの数分投稿する、無ければ抜ける
+            if post_texts is None:
+                continue
+            for post_text in post_texts:
+                post_tweet(str(post_text))
+                time.sleep(120.0)
+        except Exception as e:
+            print('---- print works ---')
+            print(e.message)
+            print('----------print end-')
 
 
 def get_event(comm_name):
@@ -32,33 +36,15 @@ def get_event(comm_name):
 
 	soup = BeautifulSoup(url)
 
-	#タイトルの一覧
-	#all_title = get_title(soup)
-	#urlの一覧
+	#イベント投稿用urlの一覧を取得
 	all_url = get_url(soup,comm_name)
-	#urlの一覧からリンク先のtwitterリンクを読み込んでそれを投稿
+	if all_url is None:
+		return all_url
+	#urlの一覧からtwitterリンクを読み込む
 	tweet_shares = get_tweetlink(all_url)
-
-	#イベント日時の一覧
-	#all_date = get_date(soup)
-	#イベント場所の一覧
-	#all_places = get_place(soup)
 
 	#まとめて送り返す
 	return tweet_shares
-	#return all_title,all_url,all_date,all_places
-
-#タイトルの一覧を
-def get_title(soup):
-	all = soup.find_all('h3')
-
-	titles = []
-	for title in all:
-		span =title.find('span')
-		if span is not None:
-			titles.append(span.string) #extendにすると１文字ずつになってしまう？？
-
-	return titles
 
 #urlの一覧を取得
 def get_url(soup,comm_name):
@@ -74,32 +60,6 @@ def get_url(soup,comm_name):
 
 	return urls
 
-#イベント日時を取得
-def get_date(soup):
-	all_date = soup.find_all("time")
-	dates = []
-	for date in all_date:
-		if date is not None:
-			dates.append(date.string)
-	return dates
-
-#イベント場所を取得
-def get_place(soup):
-	all_place = soup.find_all("span",itemprop='name')
-	places = []
-	for place in all_place:
-		if place is not None:
-			places.append(place.string)
-	return places	
-
-def edit_post(titles,urls,dates,place):
-	#編集する
-	post_text = []
-	for x in range(len(titles)):
-		post_text.append("自動投稿テスト:"+str(titles[x])+"\n"+str(urls[x])+"\n"+str(dates[x])+"\n"+str(place[x]))
-
-	return post_text
-
 def get_tweetlink(all_url):
 	#開催前urlの一覧からtwitter投稿用イベントの一覧を取得する
 	tweet_shares = []
@@ -111,10 +71,7 @@ def get_tweetlink(all_url):
 		url = link.get("data-url")
 		tweet_shares.append(str(title)+"\n"+str(url))
 
-
 	return tweet_shares
-
-
 
 def post_tweet(post_text):
 	inifile = configparser.SafeConfigParser()
@@ -125,14 +82,19 @@ def post_tweet(post_text):
 	CONSUMER_SECRET = str(inifile.get("twitter","CONSUMER_SECRET")).strip()
 	ACCESS_KEY      = str(inifile.get("twitter","ACCESS_KEY")).strip()
 	ACCESS_SECRET   = str(inifile.get("twitter","ACCESS_SECRET")).strip()
+    '''
+    CONSUMER_KEY    = "ALMItU5hAuzuQ6KFtV906YfuC"
+    CONSUMER_SECRET = "cvNLpudstNPAlz4yDccESgxmN0icSE4wqq0asdnrOA0T9rdcrX"
+    ACCESS_KEY      = "2208330278-PF7xFBBxd4U1G2X2czVsLrye3GK2uYGEXURKPM8"
+    ACCESS_SECRET   = "jVn7CIeOAxiSASL4WtlT0u5kHNmiLpThQiUsRfGxmBtF6"
+    '''
+    #twitterで投稿するときに有効化
+    api = twython.Twython(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_KEY,ACCESS_SECRET)
 
-	#twitterで投稿するときに有効化
-	api = twython.Twython(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_KEY,ACCESS_SECRET)
-
-	try:
-		api.update_status(status=post_text)
-	except twython.TwythonError as e:
-		print (e)
+    try:
+        api.update_status(status=post_text)
+    except twython.TwythonError as e:
+        print (e)
 
 
 if __name__ == "__main__":
