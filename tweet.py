@@ -78,16 +78,10 @@ def post_tweet(post_text):
 	inifile.read("./settings.ini")
 
 	#twitter投稿用アクセスキーとか 
-	CONSUMER_KEY    = str(inifile.get("twitter","CONSUMER_KEY")).strip()
-	CONSUMER_SECRET = str(inifile.get("twitter","CONSUMER_SECRET")).strip()
-	ACCESS_KEY      = str(inifile.get("twitter","ACCESS_KEY")).strip()
-	ACCESS_SECRET   = str(inifile.get("twitter","ACCESS_SECRET")).strip()
-    '''
-    CONSUMER_KEY    = "ALMItU5hAuzuQ6KFtV906YfuC"
-    CONSUMER_SECRET = "cvNLpudstNPAlz4yDccESgxmN0icSE4wqq0asdnrOA0T9rdcrX"
-    ACCESS_KEY      = "2208330278-PF7xFBBxd4U1G2X2czVsLrye3GK2uYGEXURKPM8"
-    ACCESS_SECRET   = "jVn7CIeOAxiSASL4WtlT0u5kHNmiLpThQiUsRfGxmBtF6"
-    '''
+    CONSUMER_KEY    = str(inifile.get("twitter","CONSUMER_KEY")).strip()
+    CONSUMER_SECRET = str(inifile.get("twitter","CONSUMER_SECRET")).strip()
+    ACCESS_KEY      = str(inifile.get("twitter","ACCESS_KEY")).strip()
+    ACCESS_SECRET   = str(inifile.get("twitter","ACCESS_SECRET")).strip()
     #twitterで投稿するときに有効化
     api = twython.Twython(CONSUMER_KEY,CONSUMER_SECRET,ACCESS_KEY,ACCESS_SECRET)
 
