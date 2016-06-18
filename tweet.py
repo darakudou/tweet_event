@@ -13,9 +13,20 @@ import re
 import time
 import configparser
 import json
+import dateutil.parser
+import pytz
+import random
 
+
+tz_tokyo = pytz.timezone('Asia/Tokyo')
+today = datetime.datetime.now(tz_tokyo)
 def main():
 
+    #お昼の処理
+    if today.hour == '11' or today.hour == '12':
+        post_text= get_lunch()
+
+        post_tweet(post_text)
 
     #doorkeeperからギーラボとnsegさんのイベント情報を取得する
     comm_names = ['nseg','glnagano']
@@ -32,35 +43,52 @@ def main():
                 time.sleep(120.0)
         except Exception as e:
             print('---- print works ---')
-            print(e.message)
+            print(e.args)
             print('----------print end-')
     #connpassからづや会の情報を取得する
+    #日本語部分をエンコードしてバイト型にする
+    param = {"keyword":"づや会".encode(encoding="utf-8")}
+    post_texts = get_conpass_event(param)
     try:
-        #日本語部分をエンコードしてバイト型にする
-        param = {"keyword":"づや会".encode(encoding="utf-8")}
-        #urlエンコードでurlっぽくしてくれる？？
-        encodedParams = urllib.parse.urlencode(param)
-        with urllib.request.urlopen("http://connpass.com/api/v1/event/?"+encodedParams) as res:
-            respons = json.loads(res.read().decode('utf-8'))
-            tweet = respons['events'][0]['started_at'][6:7]+"月"+\
-			        respons['events'][0]['started_at'][8:9]+"日 "+\
-				    respons['events'][0]['title']+"\n"+\
-                    respons['events'][0]['event_url']+"\n#"+respons['events'][0]['hash_tag']
-        post_tweet(tweet)
+        if post_texts is not None:
+            post_tweet(post_texts)
     except Exception as e:
         print('---- print works ---')
-        print(e.message)
+        print(e.args)
         print('----------print end-')
 
 
 
-    #except Exception as e:
-    #    print('---- print works ---')
-        #print(e.message)
-    #    print('----------print end-')
+def get_lunch():
+    #1時間に一回呟くのでランダムで何か言う
+    food_list = ['\U0001F354','\U0001F355',
+                 '\U0001F35A','\U0001F35B',
+                 '\U0001F35C','\U0001F35D',
+                 '\U0001F363','\U0001F371','\U0001F37C']
 
+    return u"迷ったら今日のお昼はこれ！→→→→"+random.choice(food_list)+u"←←←←←"
 
+def get_conpass_event(param):
+    try:
+        #urlエンコードでurlっぽくしてくれる？？
+        encodedParams = urllib.parse.urlencode(param)
+        with urllib.request.urlopen("http://connpass.com/api/v1/event/?"+encodedParams) as res:
+            respons = json.loads(res.read().decode('utf-8'))
+            #日付が過去なら飛ばす
 
+            event_datetime = dateutil.parser.parse(respons['events'][0]['started_at'])
+            if  event_datetime < today:
+                return None
+
+            tweet = respons['events'][0]['started_at'][5:7]+"月"+\
+			        respons['events'][0]['started_at'][8:10]+"日 "+\
+				    respons['events'][0]['title']+"\n"+\
+                    respons['events'][0]['event_url']+"\n#"+respons['events'][0]['hash_tag']
+        return tweet
+    except Exception as e:
+        print('---- print works ---')
+        print(e.args)
+        print('----------print end-')
 
 
 
@@ -121,7 +149,7 @@ def post_tweet(post_text):
     try:
         api.update_status(status=post_text)
     except twython.TwythonError as e:
-        print (e)
+        print (e.args)
 
 
 if __name__ == "__main__":
