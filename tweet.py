@@ -22,11 +22,15 @@ tz_tokyo = pytz.timezone('Asia/Tokyo')
 today = datetime.datetime.now(tz_tokyo)
 def main():
 
-    #お昼の処理
-    if today.hour == '11' or today.hour == '12':
-        post_text= get_lunch()
 
+    #お昼の処理
+    if today.hour == 11 or today.hour == 12:
+        post_text= get_lunch()
         post_tweet(post_text)
+        
+    if today.hour == 21 or today.hour == 22:
+        post_tweet("エンジニアの皆様、そろそろ深夜残業ですよ？？帰りませんか？？")
+
 
     #doorkeeperからギーラボとnsegさんのイベント情報を取得する
     comm_names = ['nseg','glnagano']
@@ -56,6 +60,8 @@ def main():
         print('---- print works ---')
         print(e.args)
         print('----------print end-')
+
+
 
 
 
