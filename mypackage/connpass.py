@@ -38,6 +38,11 @@ def get_evant_connpass(series_id, today):
         # イベント情報から開催日が過去の物を除外
         future_events = []
         for event in events:
+            if series_id == 991: # LIGさんのイベントの時は場所にGEEKLAB.NAGANOが含まれるもののみ
+                description = event['description']
+                if 'GEEKLAB. NAGANO' not in description:
+                    continue
+
             event_datetime = dateutil.parser.parse(event['started_at'])
             if event_datetime > today:
                 event_date = change_date(event_datetime)
