@@ -74,7 +74,9 @@ def static_post(hour):
         post_tweet("エンジニアの皆様、そろそろ深夜残業ですよ？？帰りませんか？？")
 
     else:
-        post_tweet("ギークラボ長野ではイベント開催したいという方！ふらっと訪れてみたい方をお待ちしてます！")
+        # post_tweet("ギークラボ長野ではイベント開催したいという方！ふらっと訪れてみたい方をお待ちしてます！")
+        post_tweet("JXUGC #19 Xamarin ハンズオン 長野大会(11月19日(土)) http://jxug.connpass.com/event/42187/ #JXUG #glnagano ")
+
 
 
 
