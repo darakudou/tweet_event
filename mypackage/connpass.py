@@ -30,7 +30,7 @@ def get_evant_connpass_keyword(param, today):
 
 def get_evant_connpass(series_id, today):
     try:
-        with urllib.request.urlopen("http://connpass.com/api/v1/event/?series_id="+ str(series_id)) as res:
+        with urllib.request.urlopen("https://connpass.com/api/v1/event/?series_id="+ str(series_id)) as res:
             respons = json.loads(res.read().decode('utf-8'))
 
         events = respons['events']
