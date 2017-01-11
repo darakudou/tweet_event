@@ -71,17 +71,10 @@ def static_post(hour):
         post_tweet(post_text)
 
     elif hour == 21 or hour == 22:
-         post_tweet("長野市では現在オープンデータ活用に向けたニーズ調査のアンケートを実施中です！\r \
-PC: https://www.shinsei.elg-front.jp/nagano/uketsuke/dform.do?id=1480660325984\r \
-スマホ： https://www.shinsei.elg-front.jp/nagano/uketsuke/iform.do?id=1480660325984 ")
-
+        post_tweet("1日8時間睡眠のためにも寝る準備をしましょう！")
 
     else:
-        # post_tweet("ギークラボ長野ではイベント開催したいという方！ふらっと訪れてみたい方をお待ちしてます！")
-         post_tweet("長野市では現在オープンデータ活用に向けたニーズ調査のアンケートを実施中です！\r \
-PC: https://www.shinsei.elg-front.jp/nagano/uketsuke/dform.do?id=1480660325984\r \
-スマホ： https://www.shinsei.elg-front.jp/nagano/uketsuke/iform.do?id=1480660325984 ")
-
+        post_tweet("ギークラボ長野ではイベント開催したいという方！ふらっと訪れてみたい方をお待ちしてます！")
 if __name__ == "__main__":
     main()
 
