@@ -74,7 +74,7 @@ def static_post(hour):
         post_tweet("1日8時間睡眠のためにも寝る準備をしましょう！")
 
     else:
-        post_tweet("ギークラボ長野ではイベント開催したいという方！ふらっと訪れてみたい方をお待ちしてます！")
+        post_tweet("みんなのPython勉強会 in 長野(03月18日) #1 https://startpython.connpass.com/event/48846/ #stapy #glnagano")
 if __name__ == "__main__":
     main()
 
