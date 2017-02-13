@@ -76,6 +76,7 @@ def static_post(hour):
     else:
         post_tweet("みんなのPython勉強会 in 長野(03月18日) #1 https://startpython.connpass.com/event/48846/ #stapy #glnagano")
         post_tweet("【アンケートにご協力お願いいたします】 - GEEKLAB.NAGANOの活動の振り返り、今後のさらなる向上に当たり、アンケートにご協力頂けたら幸いです！ http://geeklab-nagano.com/post/157047930952/%E3%82%A2%E3%83%B3%E3%82%B1%E3%83%BC%E3%83%88%E3%81%AB%E3%81%94%E5%8D%94%E5%8A%9B%E3%81%8A%E9%A1%98%E3%81%84%E3%81%84%E3%81%9F%E3%81%97%E3%81%BE%E3%81%99")
+        post_tweet("【3月4日(土)開催：プログラミング「わくわく」探検隊】【長野県長野市会場】【対象：小学3年から6年】 https://sites.google.com/myjuen.jp/codedu-ws/")
 if __name__ == "__main__":
     main()
 
