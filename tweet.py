@@ -5,8 +5,8 @@ from mypackage.connpass import get_evant_connpass, get_evant_connpass_keyword
 import time
 today = get_now_date()
 
-def main():
 
+def main():
 
     NSEG = 2391
     GLNAGANO = 2591
@@ -30,6 +30,7 @@ def main():
     except Exception as e:
         print(e.args)
 
+
 def get_doorkeepr(comm_names):
 
     # コミュニティの数でループ
@@ -46,6 +47,7 @@ def get_doorkeepr(comm_names):
         except Exception as e:
             print(e.args)
 
+
 def get_zuyakai(param):
 
     post_texts = get_evant_connpass_keyword(param, today)
@@ -55,6 +57,7 @@ def get_zuyakai(param):
     except Exception as e:
         print(e.args)
 
+
 def get_connpass(comms):
 
     for comm in comms:
@@ -63,6 +66,7 @@ def get_connpass(comms):
         for post_text in post_texts:
             post_tweet(post_text)
             time.sleep(10.0)
+
 
 def static_post(hour):
     # 時間固定ツイート
@@ -74,8 +78,7 @@ def static_post(hour):
         post_tweet("1日8時間睡眠のためにも寝る準備をしましょう！")
 
     else:
-        post_tweet("オープンカンファレンス in 長野！4月22日(土)  http://oshwc.project2108.com/event/oshwc-2017-nagano/")
-        post_tweet("【アンケートにご協力お願いいたします】 - GEEKLAB.NAGANOの活動の振り返り、今後のさらなる向上に当たり、アンケートにご協力頂けたら幸いです！ http://geeklab-nagano.com/post/157047930952/%E3%82%A2%E3%83%B3%E3%82%B1%E3%83%BC%E3%83%88%E3%81%AB%E3%81%94%E5%8D%94%E5%8A%9B%E3%81%8A%E9%A1%98%E3%81%84%E3%81%84%E3%81%9F%E3%81%97%E3%81%BE%E3%81%99")
+        post_tweet("にゃーん(社会性フィルター)")
 if __name__ == "__main__":
     main()
 

@@ -4,6 +4,7 @@ import configparser
 import datetime, twython, platform
 import pytz
 
+
 def get_now_date():
    return datetime.datetime.now(pytz.timezone('Asia/Tokyo'))
 
@@ -19,6 +20,7 @@ def get_lunch():
                  '\U0001F37A','\U0001F419']
 
     return u"今日のお昼は"+random.choice(food_list)+u"にしよう！"
+
 
 def post_tweet(post_text):
     inifile = configparser.ConfigParser()

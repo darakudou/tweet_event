@@ -6,6 +6,7 @@ import urllib.request
 import dateutil.parser
 import datetime, pytz
 
+
 def get_evant_connpass_keyword(param, today):
     try:
         # urlエンコードでurlっぽくしてくれる？？
@@ -27,6 +28,7 @@ def get_evant_connpass_keyword(param, today):
         print('---- print works ---')
         print(e.args)
         print('----------print end-')
+
 
 def get_evant_connpass(series_id, today):
     try:
@@ -54,6 +56,7 @@ def get_evant_connpass(series_id, today):
 
     except Exception as e:
         print(e.args)
+
 
 def change_date(date):
 
