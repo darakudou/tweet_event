@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from mypackage.util import get_now_date, post_tweet, get_lunch
 from mypackage.doorkeeper import get_event_doorkeepr
-from mypackage.connpass import get_evant_connpass, get_evant_connpass_keyword
+from mypackage.connpass import get_evant_connpass, get_evant_connpass_keyword, get_event_connpass_id
 import time
 today = get_now_date()
 
@@ -60,13 +60,17 @@ def get_zuyakai(param):
 
 def get_connpass(comms):
 
+    post_texts = []
     for comm in comms:
-        post_texts = get_evant_connpass(comm, today)
+        post_texts.append(get_evant_connpass(comm, today))
 
-        for post_text in post_texts:
-            post_tweet(post_text)
-            time.sleep(10.0)
+    # イベントのIDでツイート
+    event_ids = [55693, 55694,]
+    post_texts.append(get_event_connpass_id(today, event_ids))
 
+    for post_text in post_texts:
+        post_tweet(post_text)
+        time.sleep(10.0)
 
 def static_post(hour):
     # 時間固定ツイート
@@ -81,5 +85,3 @@ def static_post(hour):
         post_tweet("にゃーん(社会性フィルター)")
 if __name__ == "__main__":
     main()
-
-

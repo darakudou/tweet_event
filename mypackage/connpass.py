@@ -37,22 +37,25 @@ def get_evant_connpass(series_id, today):
 
         events = respons['events']
 
-        # イベント情報から開催日が過去の物を除外
-        future_events = []
-        for event in events:
-            if series_id == 991: # LIGさんのイベントの時は場所にGEEKLAB.NAGANOが含まれるもののみ
-                description = event['description']
-                if 'GEEKLAB. NAGANO' not in description:
-                    continue
+        return _get_future_events(events, today)
 
-            event_datetime = dateutil.parser.parse(event['started_at'])
-            if event_datetime > today:
-                event_date = change_date(event_datetime)
+    except Exception as e:
+        print(e.args)
 
-                future_events.append(event['title']+"("+event_date+")""\n"+\
-                                event['event_url']+" #"+event['hash_tag'])
 
-        return future_events
+def get_event_connpass_id(today, event_ids=None):
+
+    if not event_ids:
+        return None
+
+    try:
+        events = []
+        for event_id in event_ids:
+            with urllib.request.urlopen("https://connpass.com/api/v1/event/?event_id="+ str(event_id)) as res:
+                respons = json.loads(res.read().decode('utf-8'))
+                events.append(respons['events'])
+
+        return _get_future_events(events, today)
 
     except Exception as e:
         print(e.args)
@@ -63,4 +66,23 @@ def change_date(date):
     return str(date)[5:7]+"月"+ str(date)[8:10]+"日"
 
 
+def _get_future_events(events, tody)
+    """イベント情報から開催日が過去の物を除外"""
 
+    future_events = []
+    for event in events:
+
+        # LIGさんのイベントの時は場所にGEEKLAB.NAGANOが含まれるもののみ
+        if series_id == 991:
+            description = event['description']
+            if 'GEEKLAB. NAGANO' not in description:
+                continue
+
+        event_datetime = dateutil.parser.parse(event['started_at'])
+        if event_datetime > today:
+            event_date = change_date(event_datetime)
+
+            future_events.append(event['title']+"("+event_date+")""\n"+\
+                            event['event_url']+" #"+event['hash_tag'])
+
+    return future_events
