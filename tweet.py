@@ -62,11 +62,11 @@ def get_connpass(comms):
 
     post_texts = []
     for comm in comms:
-        post_texts.append(get_evant_connpass(comm, today))
+        post_texts.extend(get_evant_connpass(comm, today))
 
     # イベントのIDでツイート
     event_ids = [55693, 55694,]
-    post_texts.append(get_event_connpass_id(today, event_ids))
+    post_texts.extend(get_event_connpass_id(today, event_ids))
 
     for post_text in post_texts:
         post_tweet(post_text)
